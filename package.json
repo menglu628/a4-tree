@@ -1,0 +1,31 @@
+{
+  "name": "a4-tree",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+  },
+  "private": false,
+  "dependencies": {
+    "@angular/core": "^4.0.1",
+    "@angular/common": "^4.0.1",
+    "@angular/http": "^4.0.1",
+    "@angular/platform-server": "^4.0.1",
+    "@angular/platform-browser": "^4.0.1",
+    "@angular/compiler": "^4.0.1",
+    "@angular/animations": "^4.0.1",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.2.0",
+    "zone.js": "^0.8.5"
+  },
+  "devDependencies": {
+    "typescript": "^2.2.2",
+    "@angular/compiler-cli": "^4.0.1"
+  },
+  "typings": "./index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "www.github.com/billcheng/a4-tree"
+  },
+  "author": "Bill Cheng <cccheng118@yahoo.com>",
+  "maintainers": [ "Bill Cheng <cccheng118@yahoo.com>" ]
+}

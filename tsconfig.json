@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "module": "es6",
+        "target": "es5",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "declaration": true,
+        "baseUrl": "",
+        "mapRoot": "./",
+        "moduleResolution": "node",
+        "typeRoots": [
+            "../node_modules/@types"
+        ]
+    },
+    "files": [
+        "./index.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
