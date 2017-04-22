@@ -6,7 +6,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output
   selector: 'ng2tree',
   template: `
 <ul>
-  <tree-node *ngIf="root" [node]="root" [tree]="me" [level]="0" [selected]="selected"></tree-node>
+  <tree-node *ngIf="root" [checkbox]="checkbox" [node]="root" [tree]="me" [level]="0" [selected]="selected"></tree-node>
 </ul>
   `,
   styles: [`
@@ -56,6 +56,7 @@ ul >>> span.active {
 export class TreeComponent {
 
   @Input() root: TreeNode;
+  @Input() checkbox: boolean | 'tristate';
   @Input() selected: TreeNode;
   @Output() selectedChange = new EventEmitter<TreeNode>();
   @Output() lazyLoad = new EventEmitter<LazyLoadEvent>();

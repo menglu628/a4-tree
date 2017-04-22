@@ -11,13 +11,20 @@ export enum NodeType { branchExpanded, branchCollapsed, leaf }
 <li [style.paddingLeft]="paddingLeft" (click)="doSelect()" (dblclick)="doToggle($event)">
   <i class="expandCollapse fa" [ngClass]="nodeStateClass" (click)="doToggle($event)"></i>
   <i class="nodeClass" [ngClass]="nodeClass"></i>
+  <i *ngIf="checkbox" class="checkbox fa" [ngClass]="checkStatus" (click)="doToggleCheckBox($event)" (dblclick)="doToggleCheckBox($event)"></i>
   <span [class.active]="isSelected">{{node.text}}</span>
 </li>
 <ul *ngIf="!!node.expanded && !!node.children" [@height]>
-  <tree-node *ngFor="let child of node.children" [node]="child" [tree]="tree" [level]="level+1" [selected]="selected"></tree-node>
+  <tree-node *ngFor="let child of node.children" [node]="child" [tree]="tree" [level]="level+1" [selected]="selected" [checkbox]="checkbox" [parent]="me"></tree-node>
 </ul>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`
+.checkbox {
+  width: 1.5em;
+  text-align: center;
+}
+`],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('height', [
       transition(':enter', [style({ height: 0 }), animate('250ms ease-in', style({ height: '*' }))]),
@@ -31,6 +38,8 @@ export class TreeNodeComponent {
   @Input() tree: TreeComponent;
   @Input() level: number;
   @Input() selected: TreeNode;
+  @Input() checkbox: boolean | 'tristate';
+  @Input() parent: TreeNodeComponent;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
@@ -101,6 +110,52 @@ export class TreeNodeComponent {
 
   doSelect() {
     this.tree.doSelect(this.node);
+  }
+
+  get checkStatus(): string {
+    if (this.checkbox === true || this.node.children && this.node.children.length === 0) {
+      return !!this.node.checked ? 'fa-check-square-o' : 'fa-square-o';
+    }
+
+    let allTrue = true;
+    let allFalse = true;
+    this.node.children.forEach(p => {
+      allTrue = allTrue && p.checked;
+      allFalse = allFalse && !p.checked;
+    });
+    if (allTrue) {
+      return 'fa-check-square-o';
+    }
+    return allFalse ? 'fa-square-o' : 'fa-dot-circle-o';
+  }
+
+  doToggleCheckBox(e: MouseEvent) {
+    e.stopPropagation();
+
+    this.node.checked = !this.node.checked;
+    this.doSetChildrenCheckStatus(this.node.children, this.node.checked);
+    this.doSetParentCheckStatus(this.parent);
+  }
+
+  doSetChildrenCheckStatus(children: TreeNode[], status: boolean) {
+    for (const child of children) {
+      child.checked = status;
+      this.doSetChildrenCheckStatus(child.children, status);
+    }
+  }
+
+  doSetParentCheckStatus(component: TreeNodeComponent) {
+    if (component) {
+      const oldState = component.node.checked;
+      component.node.checked = component.node.children.every(p => p.checked);
+      if (oldState !== component.node.checked) {
+        this.doSetParentCheckStatus(component.parent);
+      }
+    }
+  }
+
+  get me(): TreeNodeComponent {
+    return this;
   }
 
 }

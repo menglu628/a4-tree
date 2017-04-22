@@ -1,10 +1,11 @@
 export interface TreeNode {
     id: string;
     text: string;
-    ngClass: string;
+    ngClass?: string;
     children: TreeNode[] | null;
     expanded?: boolean;
     loading?: boolean;
+    checked?: boolean;
 }
 
 export interface LazyLoadEvent {
