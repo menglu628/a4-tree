@@ -121,7 +121,7 @@ export class TreeNodeComponent {
     let allFalse = true;
     this.node.children.forEach(p => {
       allTrue = allTrue && p.checked;
-      allFalse = allFalse && !p.checked;
+      allFalse = allFalse && p.checked === false;
     });
     if (allTrue) {
       return 'fa-check-square-o';
@@ -147,7 +147,15 @@ export class TreeNodeComponent {
   doSetParentCheckStatus(component: TreeNodeComponent) {
     if (component) {
       const oldState = component.node.checked;
-      component.node.checked = component.node.children.every(p => p.checked);
+      const allTrue = component.node.children.every(p => p.checked);
+      const allFalse = component.node.children.every(p => p.checked === false);
+      if (allTrue) {
+        component.node.checked = true;
+      } else if (allFalse) {
+        component.node.checked = false;
+      } else {
+        component.node.checked = undefined;
+      }
       if (oldState !== component.node.checked) {
         this.doSetParentCheckStatus(component.parent);
       }

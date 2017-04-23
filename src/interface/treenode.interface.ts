@@ -5,7 +5,7 @@ export interface TreeNode {
     children: TreeNode[] | null;
     expanded?: boolean;
     loading?: boolean;
-    checked?: boolean;
+    checked?: boolean | undefined;
 }
 
 export interface LazyLoadEvent {
